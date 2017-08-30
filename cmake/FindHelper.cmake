@@ -34,31 +34,26 @@ macro(FIND_HELPER prefix pkg_name header lib)
             MESSAGE(STATUS  " INCLUDEDIR        ${${prefix}_INCLUDEDIR}" )
             MESSAGE(STATUS  " LIBDIR            ${${prefix}_LIBDIR}" )
         else()
-            MESSAGE(STATUS "Checking for module '${pkg_name}'")
+            MESSAGE(STATUS "Checking for module '${pkg_name}' NO PKG")
         endif()
         if(APPLE OR NOT ${prefix}_FOUND)
             # try find_path and find_library
-            find_path(${prefix}_INCLUDE_DIRS
+            find_path(${prefix}INCLUDE_X
                 NAMES ${header}
                 HINTS ${${prefix}_INCLUDEDIR} ${${prefix}_INCLUDE_DIRS}
                 ENV ${prefix}_INCLUDE
             )
-            find_library(${prefix}_LIBRARIES
+            find_library(${prefix}_LIBRARIES_X
                 NAMES ${lib}
                 HINTS ${${prefix}_LIBDIR} ${${prefix}_LIBRARY_DIRS}
                 ENV ${prefix}_PATH
             )
+            MESSAGE(STATUS  " INCLUDE_X         ${${prefix}_INCLUDE_X}" )
+            MESSAGE(STATUS  " LIBRARIES_X       ${${prefix}_LIBRARIES_X}" )
             include(FindPackageHandleStandardArgs)
-            FIND_PACKAGE_HANDLE_STANDARD_ARGS(${prefix} DEFAULT_MSG ${prefix}_LIBRARIES ${prefix}_INCLUDE_DIRS)
-            MESSAGE(STATUS  " LIBRARIES         ${${prefix}_LIBRARIES}" )
-            MESSAGE(STATUS  " LIBRARY_DIRS      ${${prefix}_LIBRARY_DIRS}" )
-            MESSAGE(STATUS  " LDFLAGS           ${${prefix}_LDFLAGS}" )
-            MESSAGE(STATUS  " LDFLAGS_OTHER     ${${prefix}_LDFLAGS_OTHER}" )
-            MESSAGE(STATUS  " INCLUDE_DIRS      ${${prefix}_INCLUDE_DIRS}" )
-            MESSAGE(STATUS  " CFLAGS            ${${prefix}_CFLAGS}" )
-            MESSAGE(STATUS  " CFLAGS_OTHER      ${${prefix}_CFLAGS_OTHER}" )
-            MESSAGE(STATUS  " INCLUDEDIR        ${${prefix}_INCLUDEDIR}" )
-            MESSAGE(STATUS  " LIBDIR            ${${prefix}_LIBDIR}" )
+            FIND_PACKAGE_HANDLE_STANDARD_ARGS(${prefix} DEFAULT_MSG ${prefix}_LIBRARIES_Y ${prefix}_INCLUDE_Y)
+            MESSAGE(STATUS  " INCLUDE_Y         ${${prefix}_INCLUDE_Y}" )
+            MESSAGE(STATUS  " LIBRARIES_Y       ${${prefix}_LIBRARIES_Y}" )
         endif()
     endif()
 endmacro()
