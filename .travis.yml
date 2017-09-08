@@ -27,6 +27,7 @@ addons:
       - libcppunit-dev
       - liblrdf-dev
       - liblash-compat-dev
+      - librubberband-dev
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get update -qq; fi
