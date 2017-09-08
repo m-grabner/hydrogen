@@ -6,6 +6,12 @@ env:
 
 matrix:
   include:
+    - os: linux
+      dist: trusty
+      sudo: required
+    - os: linux
+      dist: snappy
+      sudo: required
     - os: osx
 
 addons:
@@ -38,4 +44,4 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install libsndfile jack pulseaudio cppunit; fi
 
 script:
-  - mkdir build && cd build && cmake -DWANT_LIBARCHIVE=1 .. && VERBOSE=1 make
+  - mkdir build && cd build && cmake -DWANT_LASH=1 -DWANT_LRDF=1 -DWANT_RUBBERBAND=1 .. && make
