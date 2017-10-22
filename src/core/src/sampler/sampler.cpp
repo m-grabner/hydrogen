@@ -412,6 +412,14 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 					break;
 			}
 		}
+
+		if( ( int )pSelectedLayer->SamplePosition == 0 )
+		{
+			if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
+			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote );
+			}
+		}
+
 		if ( !pSample ) {
 			QString dummy = QString( "NULL sample for instrument %1. Note velocity: %2" ).arg( pInstr->get_name() ).arg( pNote->get_velocity() );
 			WARNINGLOG( dummy );
@@ -525,12 +533,6 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 		float fTotalPitch = pNote->get_total_pitch() + fLayerPitch;
 
 		//_INFOLOG( "total pitch: " + to_string( fTotalPitch ) );
-		if( ( int )pSelectedLayer->SamplePosition == 0 )
-		{
-			if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
-			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote );
-			}
-		}
 
 		if ( fTotalPitch == 0.0 && pSample->get_sample_rate() == audio_output->getSampleRate() ) // NO RESAMPLE
 			nReturnValues[nReturnValueIndex] = __render_note_no_resample( pSample, pNote, pSelectedLayer, pCompo, pMainCompo, nBufferSize, nInitialSilence, cost_L, cost_R, cost_track_L, cost_track_R, pSong );
