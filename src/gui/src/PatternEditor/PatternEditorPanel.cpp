@@ -379,6 +379,15 @@ PatternEditorPanel::PatternEditorPanel( QWidget *pParent )
 	m_pNoteProbabilityScrollView->setFixedHeight( 100 );
 //~ NOTE_PROBABILITY EDITOR
 
+	// NOTE_CONTROL EDITOR
+		m_pNoteControlScrollView = new QScrollArea( NULL );
+		m_pNoteControlScrollView->setFrameShape( QFrame::NoFrame );
+		m_pNoteControlScrollView->setVerticalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+		m_pNoteControlScrollView->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+		m_pNoteControlEditor = new NotePropertiesRuler( m_pNoteControlScrollView->viewport(), this, NotePropertiesRuler::CONTROL );
+		m_pNoteControlScrollView->setWidget( m_pNoteControlEditor );
+		m_pNoteControlScrollView->setFixedHeight( 100 );
+	//~ NOTE_CONTROL EDITOR
 
 
 	// external horizontal scrollbar
@@ -433,6 +442,7 @@ PatternEditorPanel::PatternEditorPanel( QWidget *pParent )
 	__pPropertiesCombo->addItem( trUtf8("Lead and Lag") );
 	__pPropertiesCombo->addItem( trUtf8("NoteKey") );
 	__pPropertiesCombo->addItem( trUtf8("Probability") );
+	__pPropertiesCombo->addItem( trUtf8("Control") );
 	__pPropertiesCombo->update();
 	connect( __pPropertiesCombo, SIGNAL(valueChanged(QString)), this, SLOT(propertiesComboChanged(QString)));
 
@@ -465,6 +475,7 @@ PatternEditorPanel::PatternEditorPanel( QWidget *pParent )
 	pGrid->addWidget( m_pNoteLeadLagScrollView, 4, 1 );
 	pGrid->addWidget( m_pNoteNoteKeyScrollView, 4, 1 );
 	pGrid->addWidget( m_pNoteProbabilityScrollView, 4, 1 );
+	pGrid->addWidget( m_pNoteControlScrollView, 4, 1 );
 
 	pGrid->addWidget( pPropertiesPanel, 4, 0 );
 	pGrid->setRowStretch( 2, 100 );
@@ -599,6 +610,9 @@ void PatternEditorPanel::syncToExternalHorizontalScrollbar(int)
 
 	// Probability ruler
 	m_pNoteProbabilityScrollView->horizontalScrollBar()->setValue( m_pPatternEditorHScrollBar->value() );
+
+	// Control ruler
+	m_pNoteControlScrollView->horizontalScrollBar()->setValue( m_pPatternEditorHScrollBar->value() );
 }
 
 
@@ -810,6 +824,7 @@ void PatternEditorPanel::zoomInBtnClicked(Button *ref)
 	m_pNoteLeadLagEditor->zoomIn();
 	m_pNoteNoteKeyEditor->zoomIn();
 	m_pNoteProbabilityEditor->zoomIn();
+	m_pNoteControlEditor->zoomIn();
 	m_pNotePanEditor->zoomIn();
 	m_pPianoRollEditor->zoom_in();		
 
@@ -827,6 +842,7 @@ void PatternEditorPanel::zoomOutBtnClicked(Button *ref)
 	m_pNoteLeadLagEditor->zoomOut();
 	m_pNoteNoteKeyEditor->zoomOut();
 	m_pNoteProbabilityEditor->zoomOut();
+	m_pNoteControlEditor->zoomOut();
 	m_pNotePanEditor->zoomOut();
 	m_pPianoRollEditor->zoom_out();	
 
@@ -872,6 +888,7 @@ void PatternEditorPanel::patternSizeChanged( QString str )
 	m_pNoteLeadLagEditor->updateEditor();
 	m_pNoteNoteKeyEditor->updateEditor();
 	m_pNoteProbabilityEditor->updateEditor();
+	m_pNoteControlEditor->updateEditor();
 	m_pPianoRollEditor->updateEditor();
 
 	resizeEvent( NULL );
@@ -955,6 +972,7 @@ void PatternEditorPanel::propertiesComboChanged( QString text )
 		m_pNoteNoteKeyScrollView->hide();
 		m_pNoteVelocityScrollView->show();
 		m_pNoteProbabilityScrollView->hide();
+		m_pNoteControlScrollView->hide();
 
 		m_pNoteVelocityEditor->updateEditor();
 	}
@@ -964,6 +982,7 @@ void PatternEditorPanel::propertiesComboChanged( QString text )
 		m_pNoteNoteKeyScrollView->hide();
 		m_pNotePanScrollView->show();
 		m_pNoteProbabilityScrollView->hide();
+		m_pNoteControlScrollView->hide();
 
 		m_pNotePanEditor->updateEditor();
 	}
@@ -973,7 +992,8 @@ void PatternEditorPanel::propertiesComboChanged( QString text )
 		m_pNoteNoteKeyScrollView->hide();
 		m_pNoteLeadLagScrollView->show();
 		m_pNoteProbabilityScrollView->hide();
- 
+		m_pNoteControlScrollView->hide();
+
 		m_pNoteLeadLagEditor->updateEditor();
 	}
 	else if ( text == trUtf8( "NoteKey" ) ) {
@@ -982,7 +1002,8 @@ void PatternEditorPanel::propertiesComboChanged( QString text )
 		m_pNoteLeadLagScrollView->hide();
 		m_pNoteNoteKeyScrollView->show();
 		m_pNoteProbabilityScrollView->hide();
- 
+		m_pNoteControlScrollView->hide();
+
 		m_pNoteNoteKeyEditor->updateEditor();
 	}
 	else if ( text == trUtf8( "Probability" ) ) {
@@ -991,6 +1012,17 @@ void PatternEditorPanel::propertiesComboChanged( QString text )
 		m_pNoteNoteKeyScrollView->hide();
 		m_pNoteVelocityScrollView->hide();
 		m_pNoteProbabilityScrollView->show();
+		m_pNoteControlScrollView->hide();
+
+		m_pNoteProbabilityEditor->updateEditor();
+	}
+	else if ( text == trUtf8( "Control" ) ) {
+		m_pNotePanScrollView->hide();
+		m_pNoteLeadLagScrollView->hide();
+		m_pNoteNoteKeyScrollView->hide();
+		m_pNoteVelocityScrollView->hide();
+		m_pNoteProbabilityScrollView->hide();
+		m_pNoteControlScrollView->show();
 
 		m_pNoteProbabilityEditor->updateEditor();
 	}

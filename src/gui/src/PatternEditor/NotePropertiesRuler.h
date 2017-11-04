@@ -50,7 +50,8 @@ class NotePropertiesRuler : public QWidget, public H2Core::Object, public EventL
 			PAN,
 			LEADLAG,
 			NOTEKEY,
-			PROBABILITY
+			PROBABILITY,
+			CONTROL
 		};
 
 		NotePropertiesRuler( QWidget *parent, PatternEditorPanel *pPatternEditorPanel, NotePropertiesMode mode );
@@ -106,6 +107,8 @@ class NotePropertiesRuler : public QWidget, public H2Core::Object, public EventL
 		float __oldLeadLag;
 		float __probability;
 		float __oldProbability;
+		float __control;
+		float __oldControl;
 		int __noteKeyVal;
 		int __oldNoteKeyVal;
 		int __octaveKeyVal;
