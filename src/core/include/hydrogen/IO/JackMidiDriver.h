@@ -61,13 +61,13 @@ public:
 	void JackMidiWrite(jack_nframes_t nframes);
 	void JackMidiRead(jack_nframes_t nframes);
 	
-	virtual void handleQueueNote(Note* pNote);
-	virtual void handleQueueNoteOff( int channel, int key, int velocity );
-	virtual void handleQueueAllNoteOff();
-	virtual void handleOutgoingControlChange( int param, int value, int channel );
+	virtual void handleQueueNote(Note* pNote, int timestamp);
+	virtual void handleQueueNoteOff( int channel, int key, int velocity, int timestamp );
+	virtual void handleQueueAllNoteOff( int timestamp);
+	virtual void handleOutgoingControlChange( int param, int value, int channel, int timestamp );
 
 private:
-	void JackMidiOutEvent(uint8_t *buf, uint8_t len);
+	void JackMidiOutEvent(uint8_t *buf, uint8_t len, int timestamp);
 
 	void lock();
 	void unlock();
