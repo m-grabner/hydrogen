@@ -413,26 +413,6 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 			}
 		}
 
-		if( ( int )pSelectedLayer->SamplePosition == 0 )
-		{
-			if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
-			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote, -1 );
-			}
-		}
-
-		if ( !pSample ) {
-			QString dummy = QString( "NULL sample for instrument %1. Note velocity: %2" ).arg( pInstr->get_name() ).arg( pNote->get_velocity() );
-			WARNINGLOG( dummy );
-			nReturnValues[nReturnValueIndex] = true;
-			continue;
-		}
-
-		if ( pSelectedLayer->SamplePosition >= pSample->get_frames() ) {
-			WARNINGLOG( "sample position out of bounds. The layer has been resized during note play?" );
-			nReturnValues[nReturnValueIndex] = true;
-			continue;
-		}
-
 		int noteStartInFrames = ( int ) ( pNote->get_position() * audio_output->m_transport.m_nTickSize ) + pNote->get_humanize_delay();
 
 		int nInitialSilence = 0;
@@ -453,6 +433,26 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 				//return 0;
 				continue;
 			}
+		}
+
+		if( ( int )pSelectedLayer->SamplePosition == 0 )
+		{
+			if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
+			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote, nInitialSilence );
+			}
+		}
+
+		if ( !pSample ) {
+			QString dummy = QString( "NULL sample for instrument %1. Note velocity: %2" ).arg( pInstr->get_name() ).arg( pNote->get_velocity() );
+			WARNINGLOG( dummy );
+			nReturnValues[nReturnValueIndex] = true;
+			continue;
+		}
+
+		if ( pSelectedLayer->SamplePosition >= pSample->get_frames() ) {
+			WARNINGLOG( "sample position out of bounds. The layer has been resized during note play?" );
+			nReturnValues[nReturnValueIndex] = true;
+			continue;
 		}
 
 		float cost_L = 1.0f;

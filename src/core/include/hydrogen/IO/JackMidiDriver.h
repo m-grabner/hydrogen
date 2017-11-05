@@ -78,6 +78,7 @@ private:
 	pthread_mutex_t mtx;
 	int running;
 		uint8_t jack_buffer[JACK_MIDI_BUFFER_MAX * 4];
+	int jack_time[JACK_MIDI_BUFFER_MAX];
 	uint32_t rx_in_pos;
 	uint32_t rx_out_pos;
 };
