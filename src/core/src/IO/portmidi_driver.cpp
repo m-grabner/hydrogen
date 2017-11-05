@@ -135,7 +135,7 @@ PortMidiDriver::~PortMidiDriver()
 	Pm_Terminate();
 }
 
-void PortMidiDriver::handleOutgoingControlChange( int param, int value, int channel )
+void PortMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int time )
 {
 	if ( m_pMidiOut == NULL ) {
 		ERRORLOG( "m_pMidiOut = NULL " );
@@ -273,7 +273,7 @@ std::vector<QString> PortMidiDriver::getOutputPortList()
 	return portList;
 }
 
-void PortMidiDriver::handleQueueNote(Note* pNote)
+void PortMidiDriver::handleQueueNote(Note* pNote, int time)
 {
 	if ( m_pMidiOut == NULL ) {
 		ERRORLOG( "m_pMidiOut = NULL " );
@@ -300,7 +300,7 @@ void PortMidiDriver::handleQueueNote(Note* pNote)
 	Pm_Write(m_pMidiOut, &event, 1);
 }
 
-void PortMidiDriver::handleQueueNoteOff( int channel, int key, int velocity )
+void PortMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int time )
 {
 	if ( m_pMidiOut == NULL ) {
 		ERRORLOG( "m_pMidiOut = NULL " );
@@ -322,7 +322,7 @@ void PortMidiDriver::handleQueueNoteOff( int channel, int key, int velocity )
 	Pm_Write(m_pMidiOut, &event, 1);
 }
 
-void PortMidiDriver::handleQueueAllNoteOff()
+void PortMidiDriver::handleQueueAllNoteOff(int time)
 {
 	if ( m_pMidiOut == NULL ) {
 		ERRORLOG( "m_pMidiOut = NULL " );

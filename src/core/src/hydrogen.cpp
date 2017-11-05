@@ -1135,7 +1135,7 @@ inline int audioEngine_updateNoteQueue( unsigned nFrames )
 					___INFOLOG( "End of Song" );
 
 					if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
-						Hydrogen::get_instance()->getMidiOutput()->handleQueueAllNoteOff();
+						Hydrogen::get_instance()->getMidiOutput()->handleQueueAllNoteOff(-1);
 					}
 
 					return -1;
@@ -1828,7 +1828,7 @@ void Hydrogen::sequencer_play()
 void Hydrogen::sequencer_stop()
 {
 	if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
-		Hydrogen::get_instance()->getMidiOutput()->handleQueueAllNoteOff();
+		Hydrogen::get_instance()->getMidiOutput()->handleQueueAllNoteOff(-1);
 	}
 
 	m_pAudioDriver->stop();

@@ -256,7 +256,7 @@ void CoreActionController::handleOutgoingControlChange(int param, int value, int
 	}
 	
 	if( param >= 0 ){
-		pMidiDriver->handleOutgoingControlChange( param, value, channel);
+		pMidiDriver->handleOutgoingControlChange( param, value, channel, -1);
 	}
 }
 

@@ -199,7 +199,7 @@ JackMidiDriver::JackMidiWrite(jack_nframes_t nframes)
 }
 
 void 
-JackMidiDriver::handleOutgoingControlChange( int param, int value, int channel )
+JackMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int time )
 {
 	uint8_t buffer[4];	
 	
@@ -217,7 +217,7 @@ JackMidiDriver::handleOutgoingControlChange( int param, int value, int channel )
 	buffer[2] = value;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3);
+	JackMidiOutEvent(buffer, 3, -1);
 }
 
 void
@@ -272,7 +272,7 @@ JackMidiDriver::JackMidiRead(jack_nframes_t nframes)
 }
 
 void
-JackMidiDriver::JackMidiOutEvent(uint8_t buf[4], uint8_t len)
+JackMidiDriver::JackMidiOutEvent(uint8_t buf[4], uint8_t len, int time)
 {
 	uint32_t next_pos;
 
@@ -430,7 +430,7 @@ JackMidiDriver::getPortInfo(const QString& sPortName, int& nClient, int& nPort)
 	nPort = 0;
 }
 
-void JackMidiDriver::handleQueueNote(Note* pNote)
+void JackMidiDriver::handleQueueNote(Note* pNote, int time)
 {
 
 	uint8_t buffer[4];
@@ -455,18 +455,18 @@ void JackMidiDriver::handleQueueNote(Note* pNote)
 	buffer[2] = 0;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3);
+	JackMidiOutEvent(buffer, 3, time);
 
 	buffer[0] = 0x90 | channel;	/* note on */
 	buffer[1] = key;
 	buffer[2] = vel;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3);
+	JackMidiOutEvent(buffer, 3, time);
 }
 
 void
-JackMidiDriver::handleQueueNoteOff(int channel, int key, int vel)
+JackMidiDriver::handleQueueNoteOff(int channel, int key, int vel, int time)
 {
 	uint8_t buffer[4];
 
@@ -482,10 +482,10 @@ JackMidiDriver::handleQueueNoteOff(int channel, int key, int vel)
 	buffer[2] = 0;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3);
+	JackMidiOutEvent(buffer, 3, time);
 }
 
-void JackMidiDriver::handleQueueAllNoteOff()
+void JackMidiDriver::handleQueueAllNoteOff(int time)
 {
 	InstrumentList *instList = Hydrogen::get_instance()->getSong()->get_instrument_list();
 	Instrument *curInst;
@@ -504,7 +504,7 @@ void JackMidiDriver::handleQueueAllNoteOff()
 		if (key < 0 || key > 127)
 			continue;
 
-		handleQueueNoteOff(channel, key, 0);
+		handleQueueNoteOff(channel, key, 0, time);
 	}
 }
 

@@ -47,10 +47,10 @@ public:
 	virtual void close();
 	virtual std::vector<QString> getOutputPortList();
 
-	virtual void handleQueueNote(Note* pNote);
-	virtual void handleQueueNoteOff( int channel, int key, int velocity );
-	virtual void handleQueueAllNoteOff();
-	virtual void handleOutgoingControlChange( int param, int value, int channel );
+	virtual void handleQueueNote(Note* pNote, int time);
+	virtual void handleQueueNoteOff( int channel, int key, int velocity, int time );
+	virtual void handleQueueAllNoteOff( int time );
+	virtual void handleOutgoingControlChange( int param, int value, int channel, int time );
 
 private:
 

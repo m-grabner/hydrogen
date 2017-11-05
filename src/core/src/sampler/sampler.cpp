@@ -157,7 +157,7 @@ void Sampler::process( uint32_t nFrames, Song* pSong )
 		pNote =  __queuedNoteOffs[0];
 		MidiOutput* midiOut = Hydrogen::get_instance()->getMidiOutput();
 		if( midiOut != NULL ){
-			midiOut->handleQueueNoteOff( pNote->get_instrument()->get_midi_out_channel(), pNote->get_midi_key(),  pNote->get_midi_velocity() );
+			midiOut->handleQueueNoteOff( pNote->get_instrument()->get_midi_out_channel(), pNote->get_midi_key(),  pNote->get_midi_velocity(), -1 );
 
 		}
 		__queuedNoteOffs.erase( __queuedNoteOffs.begin() );
@@ -416,7 +416,7 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 		if( ( int )pSelectedLayer->SamplePosition == 0 )
 		{
 			if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
-			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote );
+			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote, -1 );
 			}
 		}
 
