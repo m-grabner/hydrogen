@@ -244,10 +244,15 @@ JackMidiDriver::JackMidiRead(jack_nframes_t nframes)
 
 	t = 0;
 	lock();
-	while ((t < nframes) &&
-		   (rx_out_pos != rx_in_pos)) {
+	while (rx_out_pos != rx_in_pos) {
 
 				len = jack_buffer[4 * rx_in_pos];
+		int timestamp = jack_timestamp[rx_in_pos];
+		if(timestamp > (int)t)
+		{
+			assert(timestamp < nframes);
+			t = timestamp;
+		}
 		if (len == 0) {
 			rx_in_pos++;
 			if (rx_in_pos >= JACK_MIDI_BUFFER_MAX)
@@ -262,7 +267,6 @@ JackMidiDriver::JackMidiRead(jack_nframes_t nframes)
 #endif
 		if (buffer == NULL)
 			break;
-		t++;
 		rx_in_pos++;
 		if (rx_in_pos >= JACK_MIDI_BUFFER_MAX)
 			rx_in_pos = 0;
@@ -295,6 +299,7 @@ JackMidiDriver::JackMidiOutEvent(uint8_t buf[4], uint8_t len, int timestamp)
 		jack_buffer[(4 * next_pos) + 1] = buf[0];
 		jack_buffer[(4 * next_pos) + 2] = buf[1];
 		jack_buffer[(4 * next_pos) + 3] = buf[2];
+		jack_timestamp[next_pos] = timestamp;
 
 	rx_out_pos = next_pos;
 
