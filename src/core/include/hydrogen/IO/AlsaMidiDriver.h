@@ -52,11 +52,11 @@ public:
 
 	void midi_action( snd_seq_t *seq_handle );
 	void getPortInfo( const QString& sPortName, int& nClient, int& nPort );
-	virtual void handleQueueNote(Note* pNote, int timestamp);
+	virtual void handleQueueNote(Note* pNote, int time);
 	
-	virtual void handleQueueNoteOff( int channel, int key, int velocity, int timestamp );
-	virtual void handleQueueAllNoteOff( int timestamp );
-	virtual void handleOutgoingControlChange( int param, int value, int channel, int timestamp );
+	virtual void handleQueueNoteOff( int channel, int key, int velocity, int time );
+	virtual void handleQueueAllNoteOff( int time );
+	virtual void handleOutgoingControlChange( int param, int value, int channel, int time );
 
 private:
 };

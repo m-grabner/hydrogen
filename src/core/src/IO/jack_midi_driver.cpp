@@ -199,7 +199,7 @@ JackMidiDriver::JackMidiWrite(jack_nframes_t nframes)
 }
 
 void 
-JackMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int timestamp )
+JackMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int time )
 {
 	uint8_t buffer[4];	
 	
@@ -247,11 +247,11 @@ JackMidiDriver::JackMidiRead(jack_nframes_t nframes)
 	while (rx_out_pos != rx_in_pos) {
 
 				len = jack_buffer[4 * rx_in_pos];
-		int timestamp = jack_timestamp[rx_in_pos];
-		if(timestamp > (int)t)
+		int time = jack_time[rx_in_pos];
+		if(time > (int)t)
 		{
-			assert(timestamp < nframes);
-			t = timestamp;
+			assert(time < nframes);
+			t = time;
 		}
 		if (len == 0) {
 			rx_in_pos++;
@@ -276,7 +276,7 @@ JackMidiDriver::JackMidiRead(jack_nframes_t nframes)
 }
 
 void
-JackMidiDriver::JackMidiOutEvent(uint8_t buf[4], uint8_t len, int timestamp)
+JackMidiDriver::JackMidiOutEvent(uint8_t buf[4], uint8_t len, int time)
 {
 	uint32_t next_pos;
 
@@ -299,7 +299,7 @@ JackMidiDriver::JackMidiOutEvent(uint8_t buf[4], uint8_t len, int timestamp)
 		jack_buffer[(4 * next_pos) + 1] = buf[0];
 		jack_buffer[(4 * next_pos) + 2] = buf[1];
 		jack_buffer[(4 * next_pos) + 3] = buf[2];
-		jack_timestamp[next_pos] = timestamp;
+		jack_time[next_pos] = time;
 
 	rx_out_pos = next_pos;
 
@@ -435,7 +435,7 @@ JackMidiDriver::getPortInfo(const QString& sPortName, int& nClient, int& nPort)
 	nPort = 0;
 }
 
-void JackMidiDriver::handleQueueNote(Note* pNote, int timestamp)
+void JackMidiDriver::handleQueueNote(Note* pNote, int time)
 {
 
 	uint8_t buffer[4];
@@ -460,18 +460,18 @@ void JackMidiDriver::handleQueueNote(Note* pNote, int timestamp)
 	buffer[2] = 0;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3, timestamp);
+	JackMidiOutEvent(buffer, 3, time);
 
 	buffer[0] = 0x90 | channel;	/* note on */
 	buffer[1] = key;
 	buffer[2] = vel;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3, timestamp);
+	JackMidiOutEvent(buffer, 3, time);
 }
 
 void
-JackMidiDriver::handleQueueNoteOff(int channel, int key, int vel, int timestamp)
+JackMidiDriver::handleQueueNoteOff(int channel, int key, int vel, int time)
 {
 	uint8_t buffer[4];
 
@@ -487,10 +487,10 @@ JackMidiDriver::handleQueueNoteOff(int channel, int key, int vel, int timestamp)
 	buffer[2] = 0;
 	buffer[3] = 0;
 
-	JackMidiOutEvent(buffer, 3, timestamp);
+	JackMidiOutEvent(buffer, 3, time);
 }
 
-void JackMidiDriver::handleQueueAllNoteOff(int timestamp)
+void JackMidiDriver::handleQueueAllNoteOff(int time)
 {
 	InstrumentList *instList = Hydrogen::get_instance()->getSong()->get_instrument_list();
 	Instrument *curInst;
@@ -509,7 +509,7 @@ void JackMidiDriver::handleQueueAllNoteOff(int timestamp)
 		if (key < 0 || key > 127)
 			continue;
 
-		handleQueueNoteOff(channel, key, 0, timestamp);
+		handleQueueNoteOff(channel, key, 0, time);
 	}
 }
 

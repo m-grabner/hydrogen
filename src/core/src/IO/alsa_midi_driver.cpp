@@ -436,7 +436,7 @@ void AlsaMidiDriver::getPortInfo( const QString& sPortName, int& nClient, int& n
 	ERRORLOG( "Midi port " + sPortName + " not found" );
 }
 
-void AlsaMidiDriver::handleQueueNote(Note* pNote, int timestamp)
+void AlsaMidiDriver::handleQueueNote(Note* pNote, int time)
 {
 	if ( seq_handle == NULL ) {
 		ERRORLOG( "seq_handle = NULL " );
@@ -478,7 +478,7 @@ void AlsaMidiDriver::handleQueueNote(Note* pNote, int timestamp)
 }
 
 
-void AlsaMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int timestamp )
+void AlsaMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int time )
 {
 	snd_seq_event_t ev;
 	snd_seq_ev_clear(&ev);
@@ -496,7 +496,7 @@ void AlsaMidiDriver::handleOutgoingControlChange( int param, int value, int chan
 	snd_seq_event_output_direct(seq_handle, &ev);
 }
 
-void AlsaMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int timestamp )
+void AlsaMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int time )
 {
 	if ( seq_handle == NULL ) {
 		ERRORLOG( "seq_handle = NULL " );
@@ -523,7 +523,7 @@ void AlsaMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int
 	snd_seq_drain_output(seq_handle);
 }
 
-void AlsaMidiDriver::handleQueueAllNoteOff(int timestamp)
+void AlsaMidiDriver::handleQueueAllNoteOff(int time)
 {
 	if ( seq_handle == NULL ) {
 		ERRORLOG( "seq_handle = NULL " );

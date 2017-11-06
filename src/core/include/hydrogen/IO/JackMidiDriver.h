@@ -61,13 +61,13 @@ public:
 	void JackMidiWrite(jack_nframes_t nframes);
 	void JackMidiRead(jack_nframes_t nframes);
 	
-	virtual void handleQueueNote(Note* pNote, int timestamp);
-	virtual void handleQueueNoteOff( int channel, int key, int velocity, int timestamp );
-	virtual void handleQueueAllNoteOff( int timestamp);
-	virtual void handleOutgoingControlChange( int param, int value, int channel, int timestamp );
+	virtual void handleQueueNote(Note* pNote, int time);
+	virtual void handleQueueNoteOff( int channel, int key, int velocity, int time );
+	virtual void handleQueueAllNoteOff( int time);
+	virtual void handleOutgoingControlChange( int param, int value, int channel, int time );
 
 private:
-	void JackMidiOutEvent(uint8_t *buf, uint8_t len, int timestamp);
+	void JackMidiOutEvent(uint8_t *buf, uint8_t len, int time);
 
 	void lock();
 	void unlock();
@@ -78,7 +78,7 @@ private:
 	pthread_mutex_t mtx;
 	int running;
 		uint8_t jack_buffer[JACK_MIDI_BUFFER_MAX * 4];
-	int jack_timestamp[JACK_MIDI_BUFFER_MAX];
+	int jack_time[JACK_MIDI_BUFFER_MAX];
 	uint32_t rx_in_pos;
 	uint32_t rx_out_pos;
 };

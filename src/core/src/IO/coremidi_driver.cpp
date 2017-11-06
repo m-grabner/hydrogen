@@ -234,7 +234,7 @@ std::vector<QString> CoreMidiDriver::getOutputPortList()
 	return cmPortList;
 }
 
-void CoreMidiDriver::handleQueueNote(Note* pNote, int timestamp)
+void CoreMidiDriver::handleQueueNote(Note* pNote, int time)
 {
 	if (cmH2Dst == NULL ) {
 		ERRORLOG( "cmH2Dst = NULL " );
@@ -267,7 +267,7 @@ void CoreMidiDriver::handleQueueNote(Note* pNote, int timestamp)
 	sendMidiPacket ( &packetList );
 }
 
-void CoreMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int timestamp )
+void CoreMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int time )
 {
 	if (cmH2Dst == NULL ) {
 		ERRORLOG( "cmH2Dst = NULL " );
@@ -294,7 +294,7 @@ void CoreMidiDriver::handleQueueNoteOff( int channel, int key, int velocity, int
 	sendMidiPacket ( &packetList );
 }
 
-void CoreMidiDriver::handleQueueAllNoteOff( int timestamp )
+void CoreMidiDriver::handleQueueAllNoteOff( int time )
 {
 	if (cmH2Dst == NULL ) {
 		ERRORLOG( "cmH2Dst = NULL " );
@@ -326,7 +326,7 @@ void CoreMidiDriver::handleQueueAllNoteOff( int timestamp )
 	}
 }
 
-void CoreMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int timestamp )
+void CoreMidiDriver::handleOutgoingControlChange( int param, int value, int channel, int time )
 {
 	if (cmH2Dst == NULL ) {
 		ERRORLOG( "cmH2Dst = NULL " );

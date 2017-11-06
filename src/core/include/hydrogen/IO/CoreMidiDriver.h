@@ -51,10 +51,10 @@ public:
 	virtual void close();
 	virtual std::vector<QString> getOutputPortList();
 
-	virtual void handleQueueNote(Note* pNote, int timestamp);
-	virtual void handleQueueNoteOff( int channel, int key, int velocity, int timestamp );
-	virtual void handleQueueAllNoteOff( int timestamp );
-	virtual void handleOutgoingControlChange( int param, int value, int channel, int timestamp );
+	virtual void handleQueueNote(Note* pNote, int time);
+	virtual void handleQueueNoteOff( int channel, int key, int velocity, int time );
+	virtual void handleQueueAllNoteOff( int time );
+	virtual void handleOutgoingControlChange( int param, int value, int channel, int time );
 
 	MIDIClientRef  h2MIDIClient;
 	ItemCount cmSources;
