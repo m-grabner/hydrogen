@@ -438,7 +438,7 @@ bool Sampler::__render_note( Note* pNote, unsigned nBufferSize, Song* pSong )
 		if( ( int )pSelectedLayer->SamplePosition == 0 )
 		{
 			if( Hydrogen::get_instance()->getMidiOutput() != NULL ){
-			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote, noteStartInFrames - nFramepos );
+			Hydrogen::get_instance()->getMidiOutput()->handleQueueNote( pNote, nInitialSilence );
 			}
 		}
 
