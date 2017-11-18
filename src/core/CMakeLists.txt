@@ -5,7 +5,7 @@ FILE(GLOB_RECURSE hydrogen_INCLUDES include/*.h)
 FILE(GLOB_RECURSE hydrogen_SOURCES src/*.cpp src/*.cc src/*.c)
 LIST(APPEND hydrogen_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/include/hydrogen/config.h)
 
-ADD_LIBRARY( hydrogen-core-${VERSION} ${H2CORE_LIBRARY_TYPE} ${hydrogen_SOURCES})
+ADD_LIBRARY( hydrogen-core ${H2CORE_LIBRARY_TYPE} ${hydrogen_SOURCES})
 INCLUDE_DIRECTORIES( include
     ${CMAKE_SOURCE_DIR}/include                 # regular headers
     ${CMAKE_CURRENT_BINARY_DIR}/include         # generated config.h
@@ -26,7 +26,7 @@ INCLUDE_DIRECTORIES( include
     ${RUBBERBAND_INCLUDE_DIRS}
 )
 
-TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
+TARGET_LINK_LIBRARIES(hydrogen-core
     ${LIBTAR_LIBRARIES}
     ${LIBARCHIVE_LIBRARIES}
     ${LIBSNDFILE_LIBRARIES}
@@ -48,20 +48,22 @@ TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
     ${OSC_LIBRARIES}
 )
 
-TARGET_LINK_LIBRARIES(hydrogen-core-${VERSION}
+TARGET_LINK_LIBRARIES(hydrogen-core
 	Qt5::Core
 	Qt5::Xml
 	Qt5::XmlPatterns
 )
 
-#SET_TARGET_PROPERTIES(hydrogen-core-${VERSION} PROPERTIES PUBLIC_HEADER   "${hydrogen_INCLUDES}" )
+#SET_TARGET_PROPERTIES(hydrogen-core PROPERTIES PUBLIC_HEADER   "${hydrogen_INCLUDES}" )
 
-INSTALL(TARGETS hydrogen-core-${VERSION}
+INSTALL(TARGETS hydrogen-core
     LIBRARY DESTINATION "lib${LIB_SUFFIX}"
     ARCHIVE DESTINATION "lib${LIB_SUFFIX}"
     # do not copy directory hierarchy
     #PUBLIC_HEADER DESTINATION include/hydrogen
 )
+
+SET_TARGET_PROPERTIES(hydrogen-core PROPERTIES VERSION ${VERSION})
 
 IF(NOT APPLE AND NOT WIN32)
     INSTALL(DIRECTORY include DESTINATION "${CMAKE_INSTALL_PREFIX}" FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)

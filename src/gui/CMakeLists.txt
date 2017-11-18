@@ -51,10 +51,10 @@ ENDIF()
 ADD_EXECUTABLE(hydrogen WIN32 MACOSX_BUNDLE ${hydrogen_SRCS} ${hydrogen_MOC} ${hydrogen_UIS_H} ${CMAKE_SOURCE_DIR}/windows/icon.rc)
 
 TARGET_LINK_LIBRARIES(hydrogen
-	hydrogen-core-${VERSION}
+	hydrogen-core
 	Qt5::Widgets
 )
 qt5_use_modules(hydrogen Widgets)
-ADD_DEPENDENCIES(hydrogen hydrogen-core-${VERSION})
+ADD_DEPENDENCIES(hydrogen hydrogen-core)
 
 INSTALL(TARGETS hydrogen RUNTIME DESTINATION bin BUNDLE DESTINATION bin )

@@ -12,10 +12,10 @@ link_directories()
 add_executable(tests ${TESTS_SRCS})
 
 target_link_libraries(tests
-	hydrogen-core-${VERSION}
+	hydrogen-core
 	${CPPUNIT_LIBRARIES}
 	Qt5::Core
 )
 
-add_dependencies(tests hydrogen-core-${VERSION})
+add_dependencies(tests hydrogen-core)
 
