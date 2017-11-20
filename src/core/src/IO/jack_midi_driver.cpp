@@ -248,11 +248,7 @@ JackMidiDriver::JackMidiRead(jack_nframes_t nframes)
 
 				len = jack_buffer[4 * rx_in_pos];
 		int time = jack_time[rx_in_pos];
-		if(time > (int)t)
-		{
-			assert(time < nframes);
-			t = time;
-		}
+		t = std::min((jack_nframes_t)std::max(time, (int)t), nframes - 1);
 		if (len == 0) {
 			rx_in_pos++;
 			if (rx_in_pos >= JACK_MIDI_BUFFER_MAX)
